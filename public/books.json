@@ -1,0 +1,26 @@
+[
+  {
+    "title": "Dune",
+    "author": "Frank Herbert",
+    "image": "https://covers.openlibrary.org/b/id/240726-S.jpg",
+    "category": "Science-fiction"
+  },
+  {
+    "title": "Neuromancer",
+    "author": "William Gibson",
+    "image": "https://covers.openlibrary.org/b/id/234789-S.jpg",
+    "category": "Science-fiction"
+  },
+  {
+    "title": "Les Droits de l’Homme",
+    "author": "Jean Morange",
+    "image": "https://covers.openlibrary.org/b/id/227987-S.jpg",
+    "category": "Juridique"
+  },
+  {
+    "title": "Cosmos",
+    "author": "Carl Sagan",
+    "image": "https://covers.openlibrary.org/b/id/240123-S.jpg",
+    "category": "Scientifique"
+  }
+]
