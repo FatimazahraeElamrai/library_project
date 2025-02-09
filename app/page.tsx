@@ -1,12 +1,14 @@
 "use client";
 
-import BookList from "@/components-library/BookList";
-import ReviewForm from "@/components-library/ReviewForm";
+
 import FilterBar from "@/components-library/FilterBar";
 import { useState, useEffect } from "react";
+import Link from "next/link";
+import Image from "next/image";
 
 // ✅ Définition du type pour les livres
 interface Book {
+  id: number;
   title: string;
   author: string;
   category: string;
@@ -17,12 +19,17 @@ export default function Home() {
   const [books, setBooks] = useState<Book[]>([]);
   const [titleFilter, setTitleFilter] = useState("");
   const [authorFilter, setAuthorFilter] = useState("");
-  const [categoryFilter, setCategoryFilter] = useState(""); // ✅ Gère "all"
+  const [categoryFilter, setCategoryFilter] = useState("");
 
   // ✅ Charger les données dynamiquement depuis `/public/books.json`
   useEffect(() => {
     fetch("/books.json")
-      .then((res) => res.json())
+      .then((res) => {
+        if (!res.ok) {
+          throw new Error("Problème de chargement du fichier books.json");
+        }
+        return res.json();
+      })
       .then((data: Book[]) => setBooks(data))
       .catch((error) => console.error("Erreur lors du chargement des livres:", error));
   }, []);
@@ -32,7 +39,7 @@ export default function Home() {
     (book) =>
       book.title.toLowerCase().includes(titleFilter.toLowerCase()) &&
       book.author.toLowerCase().includes(authorFilter.toLowerCase()) &&
-      (categoryFilter === "" || book.category.toLowerCase() === categoryFilter.toLowerCase()) // ✅ Gère bien "all"
+      (categoryFilter === "" || book.category.toLowerCase() === categoryFilter.toLowerCase())
   );
 
   return (
@@ -47,13 +54,31 @@ export default function Home() {
       />
 
       {filteredBooks.length > 0 ? (
-        <BookList books={filteredBooks} />
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+          {filteredBooks.map((book) => (
+            <div key={book.id} className="border p-4 rounded-lg shadow-md">
+              {/* ✅ Utilisation de `next/image` pour les images */}
+              <Image
+                src={book.image}
+                alt={book.title}
+                width={300}
+                height={200}
+                className="w-full h-40 object-cover mb-2"
+              />
+              <h2 className="text-lg font-semibold">{book.title}</h2>
+              <p className="text-gray-600">Auteur : {book.author}</p>
+              <p className="text-gray-500">Catégorie : {book.category}</p>
+
+              {/* ✅ Correction du lien */}
+              <Link href={`/book/${book.id}`}>
+                <span className="mt-2 block text-blue-500 underline">Découvrez ce livre</span>
+              </Link>
+            </div>
+          ))}
+        </div>
       ) : (
         <p className="text-gray-500">Aucun livre trouvé.</p>
       )}
-
-      <hr className="my-6" />
-      <ReviewForm />
     </div>
   );
 }
