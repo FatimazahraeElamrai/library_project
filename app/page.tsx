@@ -9,7 +9,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import Guard from "@/components/Guard"; // ✅ Protection RBAC
-
+import { LogOut } from "lucide-react";
 interface Book {
   id: number;
   title: string;
@@ -27,7 +27,7 @@ export default function Home() {
 }
 
 function LibraryContent() {
-  const { user, setUser } = useAuth(); // ✅ Ajout de `setUser`
+  const { user, setUser } = useAuth();
   const router = useRouter();
   const [books, setBooks] = useState<Book[]>([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -37,6 +37,12 @@ function LibraryContent() {
     setUser(null); // ✅ Supprime l'utilisateur du contexte
     localStorage.removeItem("user"); // ✅ Supprime `user` du `localStorage`
     router.push("/login"); // ✅ Redirige immédiatement vers `/login`
+  };
+
+  // ✅ Fonction pour ajouter un livre
+  const handleAddBook = (newBook: Book) => {
+    setBooks((prevBooks) => [...prevBooks, newBook]);
+    setIsModalOpen(false);
   };
 
   // ✅ Charger les livres depuis `/public/books.json`
@@ -51,9 +57,13 @@ function LibraryContent() {
     <div className="p-6">
       <div className="flex justify-between items-center">
         <h1 className="text-2xl font-bold mb-4">Bienvenue dans la bibliothèque</h1>
-        <Button onClick={handleLogout} className="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded">
-          Déconnexion
-        </Button>
+        {/* ✅ Icône de déconnexion à la place du bouton */}
+        <button
+      onClick={handleLogout}
+      className="text-3xl text-gray-700 hover:text-red-500 transition"
+    >
+      <LogOut size={24} /> {/* Icône de déconnexion */}
+    </button>
       </div>
 
       {/* ✅ Afficher le bouton "Ajouter un livre" uniquement pour un admin */}

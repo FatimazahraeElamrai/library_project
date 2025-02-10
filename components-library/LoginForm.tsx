@@ -32,17 +32,14 @@ export default function LoginForm() {
 
     const userData = {
       id: Date.now(),
-      name: email.split("@")[0], // ✅ Affichage plus propre du nom
+      name: email.split("@")[0],
       role: foundUser.role,
       email: foundUser.email,
     };
 
     setUser(userData);
-    localStorage.setItem("user", JSON.stringify(userData)); // ✅ Persistance de l'utilisateur
+    localStorage.setItem("user", JSON.stringify(userData));
 
-    console.log("🔍 Utilisateur après setUser :", userData);
-
-    // ✅ Ajout d'une légère attente pour que `setUser` se mette à jour avant la redirection
     setTimeout(() => {
       router.push("/");
     }, 50);
@@ -50,27 +47,37 @@ export default function LoginForm() {
 
   return (
     <div className="fixed inset-0 flex justify-center items-center bg-gray-100">
-      <div className="p-6">
-        <Card className="w-96 shadow-lg p-8 bg-white rounded-lg">
+      <div className="w-2/3 h-2/3 max-w-4xl p-10">
+  <Card className="w-full h-full shadow-lg p-12 bg-white rounded-xl flex flex-col justify-center">
+
           <CardHeader className="text-center">
-            <CardTitle className="text-2xl font-bold">Connexion 🔑</CardTitle>
+            <CardTitle className="text-4xl font-bold flex items-center justify-center gap-3">
+              Connexion <span className="text-yellow-500 text-4xl">🔑</span> {/* ✅ Icône plus grande */}
+            </CardTitle>
           </CardHeader>
-          <CardContent className="space-y-4">
+          <CardContent className="flex flex-col flex-grow space-y-8 justify-center"> 
             {error && <p className="text-red-500 text-center">{error}</p>}
-            <Input
-              type="email"
-              placeholder="Email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-            />
-            <Input
-              type="password"
-              placeholder="Mot de passe"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-            />
+            <div className="space-y-6">
+              <Input
+                type="email"
+                placeholder="Email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                className="p-4 text-lg" /* ✅ Inputs plus grands */
+              />
+              <Input
+                type="password"
+                placeholder="Mot de passe"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                className="p-4 text-lg"
+              />
+            </div>
             <div className="flex justify-center">
-              <Button className="w-full bg-blue-500 hover:bg-blue-600" onClick={handleLogin}>
+              <Button
+                className="w-full bg-blue-500 hover:bg-blue-600 text-white text-lg font-semibold py-3 rounded-lg"
+                onClick={handleLogin}
+              >
                 Se connecter
               </Button>
             </div>
