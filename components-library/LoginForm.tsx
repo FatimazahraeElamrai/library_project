@@ -46,8 +46,14 @@ export default function LoginForm() {
   };
 
   return (
-    <div className="fixed inset-0 flex justify-center items-center bg-gray-100">
-      <div className="w-2/3 h-2/3 max-w-4xl p-10">
+
+
+    
+
+
+    <div className="fixed inset-0 flex justify-center items-center bg-gray-100 bg-opacity-90 backdrop-blur-md">
+    <div className="w-full sm:w-1/2 h-1/2 max-w-3xl p-6 sm:p-10 rounded-xl shadow-xl bg-white flex flex-col justify-center">
+  
   <Card className="w-full h-full shadow-lg p-12 bg-white rounded-xl flex flex-col justify-center">
 
           <CardHeader className="text-center">
@@ -55,33 +61,35 @@ export default function LoginForm() {
               Connexion <span className="text-yellow-500 text-4xl">🔑</span> {/* ✅ Icône plus grande */}
             </CardTitle>
           </CardHeader>
-          <CardContent className="flex flex-col flex-grow space-y-8 justify-center"> 
-            {error && <p className="text-red-500 text-center">{error}</p>}
-            <div className="space-y-6">
-              <Input
-                type="email"
-                placeholder="Email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                className="p-4 text-lg" /* ✅ Inputs plus grands */
-              />
-              <Input
-                type="password"
-                placeholder="Mot de passe"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                className="p-4 text-lg"
-              />
-            </div>
-            <div className="flex justify-center">
-              <Button
-                className="w-full bg-blue-500 hover:bg-blue-600 text-white text-lg font-semibold py-3 rounded-lg"
-                onClick={handleLogin}
-              >
-                Se connecter
-              </Button>
-            </div>
-          </CardContent>
+          <CardContent className="flex flex-col flex-grow justify-center">
+  {error && <p className="text-red-500 text-center">{error}</p>}
+
+  {/* ✅ Regroupe tous les champs + bouton avec espacement homogène */}
+  <div className="flex flex-col gap-6 mt-4">  
+    <Input
+      type="email"
+      placeholder="Email"
+      value={email}
+      onChange={(e) => setEmail(e.target.value)}
+      className="p-4 text-lg border border-gray-300 rounded-lg focus:outline-none"
+    />
+    <Input
+      type="password"
+      placeholder="Mot de passe"
+      value={password}
+      onChange={(e) => setPassword(e.target.value)}
+      className="p-4 text-lg border border-gray-300 rounded-lg focus:outline-none"
+    />
+    <Button
+      className="w-full bg-blue-500 hover:bg-blue-600 text-white text-lg font-semibold py-3 rounded-lg"
+      onClick={handleLogin}
+    >
+      Se connecter
+    </Button>
+  </div>
+</CardContent>
+
+
         </Card>
       </div>
     </div>
