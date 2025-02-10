@@ -6,6 +6,7 @@ import { useAuth } from "@/app/providers";
 import AddBookModal from "@/components-library/AddBookModal";
 import Link from "next/link";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 
 interface Book {
@@ -18,9 +19,24 @@ interface Book {
 
 export default function Home() {
   const { user } = useAuth();
+  const router = useRouter();
   const [books, setBooks] = useState<Book[]>([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isClient, setIsClient] = useState(false); // ✅ Vérification du rendu client
 
+  // ✅ Assure que le rendu est bien côté client
+  useEffect(() => {
+    setIsClient(true);
+  }, []);
+
+  // ✅ Redirection automatique si l'utilisateur n'est pas connecté
+  useEffect(() => {
+    if (isClient && !user) {
+      router.push("/login");
+    }
+  }, [user, router, isClient]);
+
+  // ✅ Charger les livres depuis `/public/books.json`
   useEffect(() => {
     fetch("/books.json")
       .then((res) => res.json())
@@ -28,16 +44,21 @@ export default function Home() {
       .catch((error) => console.error("Erreur lors du chargement des livres:", error));
   }, []);
 
+  // ✅ Fonction pour ajouter un livre
   const handleAddBook = (newBook: Book) => {
     setBooks((prevBooks) => [...prevBooks, newBook]);
     setIsModalOpen(false);
   };
 
+  // 🔄 Empêche d'afficher la page tant que `isClient` n'est pas défini
+  if (!isClient) return null;
+
   return (
     <div className="p-6">
       <h1 className="text-2xl font-bold mb-4">Bienvenue dans la bibliothèque</h1>
 
-      {user.role === "admin" && (
+      {/* ✅ Afficher le bouton "Ajouter un livre" uniquement pour un admin */}
+      {user?.role === "admin" && (
         <Button onClick={() => setIsModalOpen(true)} className="mb-4 bg-green-500 hover:bg-green-600">
           + Ajouter un livre 📚
         </Button>

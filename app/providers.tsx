@@ -1,23 +1,42 @@
 "use client";
 
-import { createContext, useContext, useState, ReactNode } from "react";
-import { getCurrentUser, User } from "@/lib/auth"; // ✅ Import ici
+import { createContext, useContext, useState, useEffect, ReactNode } from "react";
+
+type Role = "admin" | "reader";
+
+interface User {
+  id: number;
+  name: string;
+  role: Role;
+  email: string;
+}
 
 interface AuthContextType {
-  user: User;
-  setUser: (user: User) => void;
+  user: User | null;
+  setUser: (user: User | null) => void;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export function AuthProvider({ children }: { children: ReactNode }) {
-  const [user, setUser] = useState<User>(getCurrentUser());
-
-  return (
-    <AuthContext.Provider value={{ user, setUser }}>
-      {children}
-    </AuthContext.Provider>
+  const [user, setUserState] = useState<User | null>(
+    () => typeof window !== "undefined" ? JSON.parse(localStorage.getItem("user") || "null") : null
   );
+
+  useEffect(() => {
+    console.log("👤 Utilisateur actuel dans AuthProvider :", user);
+  }, [user]);
+
+  const setUser = (user: User | null) => {
+    setUserState(user);
+    if (user) {
+      localStorage.setItem("user", JSON.stringify(user));
+    } else {
+      localStorage.removeItem("user");
+    }
+  };
+
+  return <AuthContext.Provider value={{ user, setUser }}>{children}</AuthContext.Provider>;
 }
 
 export function useAuth() {
