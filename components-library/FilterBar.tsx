@@ -22,8 +22,8 @@ const FilterBar: React.FC<FilterBarProps> = ({ setTitleFilter, setAuthorFilter, 
         onChange={(e) => setAuthorFilter(e.target.value)}
       />
 
-      {/* ✅ Sélecteur de catégorie (correction de l'erreur) */}
-      <Select onValueChange={(value) => setCategoryFilter(value === "all" ? "" : value)}>
+      {/* ✅ Sélecteur de catégorie (fix complet du filtrage) */}
+      <Select onValueChange={(value) => setCategoryFilter(value)}>
         <SelectTrigger>
           <SelectValue placeholder="Filtrer par catégorie" />
         </SelectTrigger>
