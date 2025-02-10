@@ -1,10 +1,13 @@
-import { NextConfig } from "next";
-
-const nextConfig: NextConfig = {
-  reactStrictMode: true,
+/** @type {import('next').NextConfig} */
+const nextConfig = {
   images: {
-    domains: ["covers.openlibrary.org"], // Autoriser les images externes
+    remotePatterns: [
+      {
+        protocol: "https",
+        hostname: "**", // ✅ Autorise toutes les images distantes
+      },
+    ],
   },
 };
 
-export default nextConfig;
+module.exports = nextConfig;
