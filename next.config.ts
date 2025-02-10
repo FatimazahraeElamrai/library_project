@@ -1,9 +1,9 @@
-import type { NextConfig } from "next";
+import { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
   reactStrictMode: true,
   images: {
-    domains: ["covers.openlibrary.org"], // ✅ Autoriser ce domaine pour les images externes
+    domains: ["covers.openlibrary.org"], // Autoriser les images externes
   },
 };
 
